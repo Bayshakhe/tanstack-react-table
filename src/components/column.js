@@ -1,38 +1,38 @@
 export const COLUMNS = [
   {
-    Header: "ID",
+    header: "ID",
     accessorKey: "id",
   },
   {
-    Header: "First Name",
-    accessorKey: "first_name",
+    header: "Name",
+    accessorFn: (row) => `${row.first_name} ${row.last_name}`,
   },
   {
-    Header: "Last Name",
-    accessorKey: "last_name",
-  },
-  {
-    Header: "Email",
+    header: "Email",
     accessorKey: "email",
   },
   {
-    Header: "Gender",
+    header: "Gender",
     accessorKey: "gender",
   },
   {
-    Header: "IP Address",
+    header: "IP Address",
     accessorKey: "ip_address",
   },
   {
-    Header: "Age",
+    header: "Date of Birth",
+    accessorKey: "date_of_birth",
+  },
+  {
+    header: "Age",
     accessorKey: "age",
   },
   {
-    Header: "Country",
+    header: "Country",
     accessorKey: "country",
   },
   {
-    Header: "Phone",
+    header: "Phone",
     accessorKey: "phone",
   },
 ];
