@@ -9,8 +9,19 @@ import {
 } from "@tanstack/react-table";
 import { COLUMNS } from "./column";
 import MOCK_DATA from "./MOCK_DATA.json";
-import "./table.css";
+// import "./table.css";
 import ColumnFilter from "./ColumnFilter";
+import {
+  Button,
+  Checkbox,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
 
 const BasicTable = () => {
   const columns = useMemo(() => COLUMNS, []);
@@ -57,18 +68,21 @@ const BasicTable = () => {
   return (
     <div>
       {/* global search by text */}
-      <input
+      <TextField
         type="text"
-        style={{ fontSize: "20px", padding: "8px" }}
+        label="Global search"
         value={filtering}
         onChange={(e) => setFiltering(e.target.value)}
       />
       <hr />
 
       {/* table oder button */}
-      <button onClick={() => setColumnOrder(["email", "Name"])}>
+      <Button
+        variant="contained"
+        onClick={() => setColumnOrder(["email", "Name"])}
+      >
         Table by order
-      </button>
+      </Button>
       <hr />
 
       {/* column hide checkbox */}
@@ -77,36 +91,40 @@ const BasicTable = () => {
       >
         {getAllLeafColumns().map((column) => (
           <div key={column.id}>
-            <label htmlFor="">
-              <input
-                type="checkbox"
-                checked={column.getIsVisible()}
-                onChange={column.getToggleVisibilityHandler()}
-              />
-              {column.id}
-            </label>
+            <Checkbox
+              type="checkbox"
+              checked={column.getIsVisible()}
+              onChange={column.getToggleVisibilityHandler()}
+            />
+            <label htmlFor="">{column.id}</label>
           </div>
         ))}
       </div>
 
       {/* table */}
-      <table>
-        <thead>
-          {getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  {
-                    <div>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {{ asc: "↓", desc: "↑" }[header.column.getIsSorted()]}
-                      {/* {header.column.getCanFilter() ? (
+      <TableContainer>
+        <Table>
+          <TableHead>
+            {getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableCell
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {
+                      <div>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {
+                          {
+                            asc: <Button sx={{ fontSize: "20px" }}>↓</Button>,
+                            desc: <Button sx={{ fontSize: "20px" }}>↑</Button>,
+                          }[header.column.getIsSorted()]
+                        }
+                        {/* {header.column.getCanFilter() ? (
                         <div>
                           <ColumnFilter
                             column={header.column}
@@ -114,38 +132,39 @@ const BasicTable = () => {
                           />
                         </div>
                       ) : null} */}
-                    </div>
-                  }
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                      </div>
+                    }
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       {/* table pagination button */}
       <div style={{ marginTop: "20px" }}>
-        <button onClick={() => setPageIndex(0)}>First Page</button>
-        <button disabled={!getCanPreviousPage()} onClick={() => previousPage()}>
+        <Button onClick={() => setPageIndex(0)}>First Page</Button>
+        <Button disabled={!getCanPreviousPage()} onClick={() => previousPage()}>
           Previous Page
-        </button>
-        <button disabled={!getCanNextPage()} onClick={() => nextPage()}>
+        </Button>
+        <Button disabled={!getCanNextPage()} onClick={() => nextPage()}>
           Next Page
-        </button>
-        <button onClick={() => setPageIndex(getPageCount() - 1)}>
+        </Button>
+        <Button onClick={() => setPageIndex(getPageCount() - 1)}>
           Last Page
-        </button>
+        </Button>
       </div>
     </div>
   );
